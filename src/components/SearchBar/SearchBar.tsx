@@ -6,21 +6,16 @@ type SearchType = 'users' | 'repositories';
 type SearchCallback = (text: string) => void
 
 interface SearchBarProps {
-    setTextCallback: SearchCallback;
+    query: string;
+    onChangeCallback: SearchCallback;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({setTextCallback}) => {
-    const [query, setQuery] = useState('');
+const SearchBar: React.FC<SearchBarProps> = ({query, onChangeCallback}) => {
     const [type, setType] = useState<SearchType>('users');
-
-    const submit = (e: React.FormEvent) => {
-        e.preventDefault();
-        setTextCallback(query)
-    };
 
     return (
         <div>
-            <form className={styles.container} onSubmit={submit}>
+            <form className={styles.container}>
                 <div className={styles.header}>
                     <FaGithub className={styles.icon}/>
                     <div className={styles.brand}>
@@ -35,7 +30,7 @@ const SearchBar: React.FC<SearchBarProps> = ({setTextCallback}) => {
                         className={styles.input}
                         placeholder="Start typing to search …"
                         value={query}
-                        onChange={e => setQuery(e.target.value)}
+                        onChange={(e) => onChangeCallback(e.target.value)}
                     />
 
                     <select
