@@ -5,8 +5,10 @@ api.ts
 base.ts
 common.ts
 configuration.ts
+docs/Repository.md
 docs/SearchApi.md
-docs/SearchRequest.md
-docs/SearchResponse.md
+docs/SearchBody.md
+docs/SearchResultList.md
+docs/User.md
 git_push.sh
 index.ts

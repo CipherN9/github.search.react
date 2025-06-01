@@ -25,9 +25,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "gen:api": "npx @openapitools/openapi-generator-cli generate -i openapi.yml -g typescript-axios -o src/api-client --skip-validate-spec",
-    "build:api": "tsc src/testApi.ts --outDir dist --module commonjs --esModuleInterop",
-    "run:api": "node dist/testApi.js"
+    "gen:api": "npx @openapitools/openapi-generator-cli generate -i openapi.yml -g typescript-axios -o src/api-client --skip-validate-spec"
   },
   "eslintConfig": {
     "extends": [

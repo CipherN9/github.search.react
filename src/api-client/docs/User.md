@@ -1,4 +1,4 @@
-# SearchResponse
+# User
 
 
 ## Properties
@@ -8,14 +8,14 @@ Name | Type | Description | Notes
 **id** | **number** |  | [default to undefined]
 **title** | **string** |  | [default to undefined]
 **avatar_url** | **string** |  | [default to undefined]
-**location** | **string** |  | [optional] [default to undefined]
+**location** | **string** |  | [default to undefined]
 
 ## Example
 
 ```typescript
-import { SearchResponse } from './api';
+import { User } from './api';
 
-const instance: SearchResponse = {
+const instance: User = {
     id,
     title,
     avatar_url,

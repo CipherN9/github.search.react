@@ -26,46 +26,95 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerM
 /**
  * 
  * @export
- * @interface SearchRequest
+ * @interface Repository
  */
-export interface SearchRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof SearchRequest
-     */
-    'search_text': string;
-}
-/**
- * 
- * @export
- * @interface SearchResponse
- */
-export interface SearchResponse {
+export interface Repository {
     /**
      * 
      * @type {number}
-     * @memberof SearchResponse
+     * @memberof Repository
      */
     'id': number;
     /**
      * 
      * @type {string}
-     * @memberof SearchResponse
+     * @memberof Repository
      */
     'title': string;
     /**
      * 
      * @type {string}
-     * @memberof SearchResponse
+     * @memberof Repository
+     */
+    'owner': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Repository
+     */
+    'stars': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Repository
+     */
+    'description': string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof Repository
+     */
+    'url': string;
+}
+/**
+ * 
+ * @export
+ * @interface SearchBody
+ */
+export interface SearchBody {
+    /**
+     * 
+     * @type {string}
+     * @memberof SearchBody
+     */
+    'search_text': string;
+}
+/**
+ * @type SearchResultList
+ * @export
+ */
+export type SearchResultList = Repository | User;
+
+/**
+ * 
+ * @export
+ * @interface User
+ */
+export interface User {
+    /**
+     * 
+     * @type {number}
+     * @memberof User
+     */
+    'id': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    'title': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
      */
     'avatar_url': string;
     /**
      * 
      * @type {string}
-     * @memberof SearchResponse
+     * @memberof User
      */
-    'location'?: string | null;
+    'location': string | null;
 }
 
 /**
@@ -76,16 +125,16 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
     return {
         /**
          * 
-         * @param {SearchSearchTypeEnum} searchType Search type 
-         * @param {SearchRequest} searchRequest 
+         * @param {ApiSearchCreateSearchTypeEnum} searchType Search type  * &#x60;users&#x60; - Users * &#x60;repositories&#x60; - Repositories
+         * @param {SearchBody} searchBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        search: async (searchType: SearchSearchTypeEnum, searchRequest: SearchRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        apiSearchCreate: async (searchType: ApiSearchCreateSearchTypeEnum, searchBody: SearchBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'searchType' is not null or undefined
-            assertParamExists('search', 'searchType', searchType)
-            // verify required parameter 'searchRequest' is not null or undefined
-            assertParamExists('search', 'searchRequest', searchRequest)
+            assertParamExists('apiSearchCreate', 'searchType', searchType)
+            // verify required parameter 'searchBody' is not null or undefined
+            assertParamExists('apiSearchCreate', 'searchBody', searchBody)
             const localVarPath = `/api/search`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -98,6 +147,12 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication basicAuth required
+            // http basic authentication required
+            setBasicAuthToObject(localVarRequestOptions, configuration)
+
+            // authentication cookieAuth required
+
             if (searchType !== undefined) {
                 localVarQueryParameter['search_type'] = searchType;
             }
@@ -109,7 +164,7 @@ export const SearchApiAxiosParamCreator = function (configuration?: Configuratio
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(searchRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(searchBody, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -128,15 +183,15 @@ export const SearchApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @param {SearchSearchTypeEnum} searchType Search type 
-         * @param {SearchRequest} searchRequest 
+         * @param {ApiSearchCreateSearchTypeEnum} searchType Search type  * &#x60;users&#x60; - Users * &#x60;repositories&#x60; - Repositories
+         * @param {SearchBody} searchBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async search(searchType: SearchSearchTypeEnum, searchRequest: SearchRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SearchResponse>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.search(searchType, searchRequest, options);
+        async apiSearchCreate(searchType: ApiSearchCreateSearchTypeEnum, searchBody: SearchBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<SearchResultList>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.apiSearchCreate(searchType, searchBody, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['SearchApi.search']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['SearchApi.apiSearchCreate']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -151,13 +206,13 @@ export const SearchApiFactory = function (configuration?: Configuration, basePat
     return {
         /**
          * 
-         * @param {SearchSearchTypeEnum} searchType Search type 
-         * @param {SearchRequest} searchRequest 
+         * @param {ApiSearchCreateSearchTypeEnum} searchType Search type  * &#x60;users&#x60; - Users * &#x60;repositories&#x60; - Repositories
+         * @param {SearchBody} searchBody 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        search(searchType: SearchSearchTypeEnum, searchRequest: SearchRequest, options?: RawAxiosRequestConfig): AxiosPromise<Array<SearchResponse>> {
-            return localVarFp.search(searchType, searchRequest, options).then((request) => request(axios, basePath));
+        apiSearchCreate(searchType: ApiSearchCreateSearchTypeEnum, searchBody: SearchBody, options?: RawAxiosRequestConfig): AxiosPromise<Array<SearchResultList>> {
+            return localVarFp.apiSearchCreate(searchType, searchBody, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -171,25 +226,24 @@ export const SearchApiFactory = function (configuration?: Configuration, basePat
 export class SearchApi extends BaseAPI {
     /**
      * 
-     * @param {SearchSearchTypeEnum} searchType Search type 
-     * @param {SearchRequest} searchRequest 
+     * @param {ApiSearchCreateSearchTypeEnum} searchType Search type  * &#x60;users&#x60; - Users * &#x60;repositories&#x60; - Repositories
+     * @param {SearchBody} searchBody 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SearchApi
      */
-    public search(searchType: SearchSearchTypeEnum, searchRequest: SearchRequest, options?: RawAxiosRequestConfig) {
-        return SearchApiFp(this.configuration).search(searchType, searchRequest, options).then((request) => request(this.axios, this.basePath));
+    public apiSearchCreate(searchType: ApiSearchCreateSearchTypeEnum, searchBody: SearchBody, options?: RawAxiosRequestConfig) {
+        return SearchApiFp(this.configuration).apiSearchCreate(searchType, searchBody, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
 /**
  * @export
  */
-export const SearchSearchTypeEnum = {
+export const ApiSearchCreateSearchTypeEnum = {
     Users: 'users',
-    Repositories: 'repositories',
-    Issues: 'issues'
+    Repositories: 'repositories'
 } as const;
-export type SearchSearchTypeEnum = typeof SearchSearchTypeEnum[keyof typeof SearchSearchTypeEnum];
+export type ApiSearchCreateSearchTypeEnum = typeof ApiSearchCreateSearchTypeEnum[keyof typeof ApiSearchCreateSearchTypeEnum];
 
 

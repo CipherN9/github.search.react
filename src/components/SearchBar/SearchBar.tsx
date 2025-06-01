@@ -1,18 +1,22 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styles from './SearchBar.module.css';
 import {FaGithub} from 'react-icons/fa';
+import {ApiSearchCreateSearchTypeEnum} from "../../api-client";
+import type {SearchResultList} from "../../api-client";
 
-type SearchType = 'users' | 'repositories';
-type SearchCallback = (text: string) => void
+type EventCallback = (value: string) => void
+type SearchTypeEventCallback = (value: ApiSearchCreateSearchTypeEnum) => void
+type setItemsCallback = (value: SearchResultList[]) => void
 
 interface SearchBarProps {
     query: string;
-    onChangeCallback: SearchCallback;
+    onChangeCallback: EventCallback;
+    searchType: ApiSearchCreateSearchTypeEnum;
+    setSearchType: SearchTypeEventCallback;
+    setItems: setItemsCallback;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({query, onChangeCallback}) => {
-    const [type, setType] = useState<SearchType>('users');
-
+const SearchBar: React.FC<SearchBarProps> = ({query, onChangeCallback, searchType, setSearchType, setItems}) => {
     return (
         <div>
             <form className={styles.container}>
@@ -30,13 +34,17 @@ const SearchBar: React.FC<SearchBarProps> = ({query, onChangeCallback}) => {
                         className={styles.input}
                         placeholder="Start typing to search …"
                         value={query}
-                        onChange={(e) => onChangeCallback(e.target.value)}
+                        onChange={(e) => onChangeCallback(e.target.value)
+                    }
                     />
 
                     <select
                         className={styles.select}
-                        value={type}
-                        onChange={e => setType(e.target.value as SearchType)}
+                        value={searchType}
+                        onChange={e => {
+                            onChangeCallback("")
+                            setItems([])
+                            setSearchType(e.target.value as ApiSearchCreateSearchTypeEnum)}}
                     >
                         <option value="users">Users</option>
                         <option value="repositories">Repositories</option>

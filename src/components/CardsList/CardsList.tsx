@@ -1,16 +1,22 @@
 import React from "react";
 import UserCard from "./UserCard/UserCard";
-import type {SearchResponse} from "../../api-client";
+import RepositoryCard from "./RepositoryCard/RepositoryCard";
+import type {User, Repository, SearchResultList} from "../../api-client";
+import {ApiSearchCreateSearchTypeEnum} from "../../api-client";
 import styles from "../CardsList/CardsList.module.css";
 
 interface CardsListProps {
-    cards: SearchResponse[];
+    searchType: ApiSearchCreateSearchTypeEnum
+    cards: SearchResultList[];
 }
 
-const CardsList: React.FC<CardsListProps> = ({cards}) => {
+const CardsList: React.FC<CardsListProps> = ({searchType, cards}) => {
     return (
         <div className={styles['cards-container']}>
-            {cards.map((card) => (<UserCard key={card.id} cardData={card}/>))}
+            {searchType === ApiSearchCreateSearchTypeEnum.Users ?
+            (cards as User[]).map((card) => (<UserCard key={card.id} cardData={card}/>)):
+                (cards as Repository[]).map((card) => (<RepositoryCard key={card.id} cardData={card}/>))
+        }
         </div>
     );
 }

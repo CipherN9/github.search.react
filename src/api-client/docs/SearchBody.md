@@ -1,4 +1,4 @@
-# SearchRequest
+# SearchBody
 
 
 ## Properties
@@ -10,9 +10,9 @@ Name | Type | Description | Notes
 ## Example
 
 ```typescript
-import { SearchRequest } from './api';
+import { SearchBody } from './api';
 
-const instance: SearchRequest = {
+const instance: SearchBody = {
     search_text,
 };
 ```

@@ -1,5 +1,5 @@
-import { Configuration, SearchApi } from './api-client';
-import type { SearchRequest, SearchResponse } from './api-client';
+import {Configuration, SearchApi, SearchResultList} from './api-client';
+import type { SearchBody} from './api-client';
 
 const api = new SearchApi(
   new Configuration({ basePath: 'http://localhost:8000' })
@@ -8,8 +8,8 @@ const api = new SearchApi(
 export async function fetchSearch(
   searchType: 'users' | 'repositories',
   searchText: string
-): Promise<SearchResponse[]> {
-  const payload: SearchRequest = { search_text: searchText };
-  const response = await api.search(searchType, payload);
+): Promise<SearchResultList[]> {
+  const payload: SearchBody = { search_text: searchText };
+  const response = await api.apiSearchCreate(searchType, payload);
   return response.data;
 }

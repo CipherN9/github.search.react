@@ -1,13 +1,13 @@
 # SearchApi
 
-All URIs are relative to *http://localhost:8000*
+All URIs are relative to *http://localhost*
 
 |Method | HTTP request | Description|
 |------------- | ------------- | -------------|
-|[**search**](#search) | **POST** /api/search | |
+|[**apiSearchCreate**](#apisearchcreate) | **POST** /api/search | |
 
-# **search**
-> Array<SearchResponse> search(searchRequest)
+# **apiSearchCreate**
+> Array<SearchResultList> apiSearchCreate(searchBody)
 
 
 ### Example
@@ -16,18 +16,18 @@ All URIs are relative to *http://localhost:8000*
 import {
     SearchApi,
     Configuration,
-    SearchRequest
+    SearchBody
 } from './api';
 
 const configuration = new Configuration();
 const apiInstance = new SearchApi(configuration);
 
-let searchType: 'users' | 'repositories' | 'issues'; //Search type  (default to undefined)
-let searchRequest: SearchRequest; //
+let searchType: 'users' | 'repositories'; //Search type  * `users` - Users * `repositories` - Repositories (default to undefined)
+let searchBody: SearchBody; //
 
-const { status, data } = await apiInstance.search(
+const { status, data } = await apiInstance.apiSearchCreate(
     searchType,
-    searchRequest
+    searchBody
 );
 ```
 
@@ -35,17 +35,17 @@ const { status, data } = await apiInstance.search(
 
 |Name | Type | Description  | Notes|
 |------------- | ------------- | ------------- | -------------|
-| **searchRequest** | **SearchRequest**|  | |
-| **searchType** | [**&#39;users&#39; | &#39;repositories&#39; | &#39;issues&#39;**]**Array<&#39;users&#39; &#124; &#39;repositories&#39; &#124; &#39;issues&#39;>** | Search type  | defaults to undefined|
+| **searchBody** | **SearchBody**|  | |
+| **searchType** | [**&#39;users&#39; | &#39;repositories&#39;**]**Array<&#39;users&#39; &#124; &#39;repositories&#39;>** | Search type  * &#x60;users&#x60; - Users * &#x60;repositories&#x60; - Repositories | defaults to undefined|
 
 
 ### Return type
 
-**Array<SearchResponse>**
+**Array<SearchResultList>**
 
 ### Authorization
 
-No authorization required
+[basicAuth](../README.md#basicAuth), [cookieAuth](../README.md#cookieAuth)
 
 ### HTTP request headers
 
@@ -56,7 +56,7 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-|**200** | OK |  -  |
+|**200** | List of Users or Repositories |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

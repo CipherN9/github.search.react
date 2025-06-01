@@ -3,52 +3,100 @@ info:
   title: Github Search API
   version: v1.0.0
   description: Github Search API
-servers:
-  - url: http://localhost:8000
-    description: Local dev
 paths:
   /api/search:
     post:
-      operationId: search
+      operationId: api_search_create
       parameters:
-        - in: query
-          name: search_type
-          schema:
-            type: string
-            enum:
-              - users
-              - repositories
-              - issues
-          required: true
-          description: |
-            Search type
-      tags:
-        - Search
-      requestBody:
+      - in: query
+        name: search_type
+        schema:
+          enum:
+          - users
+          - repositories
+          type: string
+          minLength: 1
+        description: |-
+          Search type
+
+          * `users` - Users
+          * `repositories` - Repositories
         required: true
+      tags:
+      - Search
+      requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SearchRequest'
+              $ref: '#/components/schemas/SearchBody'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
       responses:
         '200':
-          description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/SearchResponse'
+                  $ref: '#/components/schemas/SearchResultList'
+              examples:
+                UsersList:
+                  value:
+                  - - id: 0
+                      title: string
+                      avatar_url: string
+                      location: string
+                  summary: Users list
+                RepositoriesList:
+                  value:
+                  - - id: 0
+                      title: string
+                      owner: string
+                      stars: string
+                      description: string
+                      url: string
+                  summary: Repositories list
+          description: List of Users or Repositories
 components:
   schemas:
-    SearchRequest:
+    Repository:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        owner:
+          type: string
+        stars:
+          type: string
+        description:
+          type: string
+          nullable: true
+        url:
+          type: string
+      required:
+      - description
+      - id
+      - owner
+      - stars
+      - title
+      - url
+    SearchBody:
       type: object
       properties:
         search_text:
           type: string
       required:
-        - search_text
-    SearchResponse:
+      - search_text
+    SearchResultList:
+      oneOf:
+      - $ref: '#/components/schemas/User'
+      - $ref: '#/components/schemas/Repository'
+    User:
       type: object
       properties:
         id:
@@ -61,9 +109,10 @@ components:
           type: string
           nullable: true
       required:
-        - id
-        - title
-        - avatar_url
+      - avatar_url
+      - id
+      - location
+      - title
   securitySchemes:
     basicAuth:
       type: http

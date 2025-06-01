@@ -1,9 +1,9 @@
 import React from "react";
 import styles from './UserCard.module.css';
-import {SearchResponse} from "../../../api-client";
+import {User} from "../../../api-client";
 
 interface UserCardProps {
-    cardData: SearchResponse
+    cardData: User
 }
 
 const UserCard: React.FC<UserCardProps> = ({cardData}) => {
