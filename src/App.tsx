@@ -6,15 +6,18 @@ import CardsList from "./components/CardsList/CardsList"
 import debounce from 'lodash.debounce';
 
 const App: React.FC = () => {
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const [searchText, setSearchText] = useState<string>("");
     const [items, setItems] = useState<SearchResponse[]>([]);
     const [error, setError] = useState<string | null>(null);
     const getItems = async (query: string) => {
         if (!query) return;
+        setIsLoading(true)
 
         try {
             const response = await fetchSearch('users', query)
             setItems(response)
+            setIsLoading(false)
         } catch (err) {
             setError(String(err))
         }
@@ -22,9 +25,9 @@ const App: React.FC = () => {
 
     const debouncedFetch = useMemo(() => debounce(getItems, 300), [])
 
-    const debouncedOnChange = (value: string) => {
+    const debouncedOnChange = async (value: string) => {
         setSearchText(value)
-        debouncedFetch(value)
+        await debouncedFetch(value)
     }
 
     if (error) return <div>Error: {error}</div>;
@@ -32,11 +35,7 @@ const App: React.FC = () => {
     return (
         <div>
             <SearchBar query={searchText} onChangeCallback={debouncedOnChange}/>
-            {(items.length === 0 && searchText !== "") ?
-                (<p>Loading... </p>) :
-
-                (<CardsList cards={items}/>)
-            }
+            {isLoading ? (<p>Loading...</p>) : (<CardsList cards={items}/>)}
         </div>
     )
 };
