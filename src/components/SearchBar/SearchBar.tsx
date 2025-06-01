@@ -4,19 +4,15 @@ import {FaGithub} from 'react-icons/fa';
 import {ApiSearchCreateSearchTypeEnum} from "../../api-client";
 import type {SearchResultList} from "../../api-client";
 
-type EventCallback = (value: string) => void
-type SearchTypeEventCallback = (value: ApiSearchCreateSearchTypeEnum) => void
-type setItemsCallback = (value: SearchResultList[]) => void
-
 interface SearchBarProps {
-    query: string;
-    onChangeCallback: EventCallback;
+    searchText: string;
+    inputOnChangeCb: (value: string) => void;
     searchType: ApiSearchCreateSearchTypeEnum;
-    setSearchType: SearchTypeEventCallback;
-    setItems: setItemsCallback;
+    setSearchType: (value: ApiSearchCreateSearchTypeEnum) => void;
+    setItems: (value: SearchResultList[]) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({query, onChangeCallback, searchType, setSearchType, setItems}) => {
+const SearchBar: React.FC<SearchBarProps> = ({searchText, inputOnChangeCb, searchType, setSearchType, setItems}) => {
     return (
         <div>
             <form className={styles.container}>
@@ -33,21 +29,23 @@ const SearchBar: React.FC<SearchBarProps> = ({query, onChangeCallback, searchTyp
                         type="text"
                         className={styles.input}
                         placeholder="Start typing to search …"
-                        value={query}
+                        value={searchText}
                         onChange={(e) => {
-                            onChangeCallback(e.target.value)
+                            inputOnChangeCb(e.target.value)
                             if (e.target.value === "") setItems([])
                         }
-                    }
+                        }
                     />
 
                     <select
                         className={styles.select}
                         value={searchType}
                         onChange={e => {
-                            onChangeCallback("")
+                            setSearchType(e.target.value as ApiSearchCreateSearchTypeEnum)
+                            inputOnChangeCb("")
                             setItems([])
-                            setSearchType(e.target.value as ApiSearchCreateSearchTypeEnum)}}
+                        }
+                        }
                     >
                         <option value="users">Users</option>
                         <option value="repositories">Repositories</option>

@@ -28,7 +28,7 @@ const App: React.FC = () => {
 
     const debouncedFetch = useMemo(() => debounce(getItems, 300), [getItems])
 
-    const debouncedOnChange = async (value: string) => {
+    const inputOnChangeCb = async (value: string) => {
         setSearchText(value)
         await debouncedFetch(value)
     }
@@ -37,8 +37,8 @@ const App: React.FC = () => {
 
     return (
         <div>
-            <SearchBar query={searchText}
-                       onChangeCallback={debouncedOnChange}
+            <SearchBar searchText={searchText}
+                       inputOnChangeCb={inputOnChangeCb}
                        searchType={searchType}
                        setSearchType={setSearchType}
                        setItems={setItems}
