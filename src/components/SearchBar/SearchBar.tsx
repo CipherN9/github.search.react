@@ -34,7 +34,10 @@ const SearchBar: React.FC<SearchBarProps> = ({query, onChangeCallback, searchTyp
                         className={styles.input}
                         placeholder="Start typing to search …"
                         value={query}
-                        onChange={(e) => onChangeCallback(e.target.value)
+                        onChange={(e) => {
+                            onChangeCallback(e.target.value)
+                            if (e.target.value === "") setItems([])
+                        }
                     }
                     />
 
