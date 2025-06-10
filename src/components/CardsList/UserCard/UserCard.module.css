@@ -9,13 +9,14 @@
     overflow: hidden;
     background: #fbfafa;
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     padding: 1rem ;
 }
 
 .card:hover {
   transform: scale(1.05);
   box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  background: #ede9e9;
 }
 
 .image {
