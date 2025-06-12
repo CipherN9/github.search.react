@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import UserCard from "./UserCard/UserCard";
 import RepositoryCard from "./RepositoryCard/RepositoryCard";
 import type {User, Repository, SearchResultList} from "../../api-client";

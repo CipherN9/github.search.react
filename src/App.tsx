@@ -4,6 +4,7 @@ import {ApiSearchCreateSearchTypeEnum, SearchResultList} from './api-client';
 import SearchBar from "./components/SearchBar/SearchBar";
 import CardsList from "./components/CardsList/CardsList"
 import debounce from 'lodash.debounce';
+import styles from './App.module.css'
 
 
 const App: React.FC = () => {
@@ -36,7 +37,7 @@ const App: React.FC = () => {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div>
+        <div className={styles.main}>
             <SearchBar searchText={searchText}
                        inputOnChangeCb={inputOnChangeCb}
                        searchType={searchType}
